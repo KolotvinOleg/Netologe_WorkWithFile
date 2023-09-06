@@ -2,34 +2,19 @@ import os
 
 
 # Task_1
-def from_str_to_list(text: str) -> list:
-    lst_cook_book = text.split('\n')
-    new_lst = []
-    while '' in lst_cook_book:
-        new_lst_for_dish = lst_cook_book[:lst_cook_book.index('')]
-        new_lst.append(new_lst_for_dish)
-        del lst_cook_book[:len(new_lst_for_dish) + 1]
-    new_lst.append(lst_cook_book)
-    return new_lst
-
-
 def from_file_to_dict(file_name: str) -> dict:
     cook_book = {}
     with open(file_name, encoding='utf-8') as f:
-        cook_text = f.read()
-    cook_nested_list = from_str_to_list(cook_text)
-    for dish in cook_nested_list:
-        dish_lst = []
-        for i in range(2, int(dish[1]) + 2):
-            ingredient_dish = {}
-            ingredint_lst = dish[i].split(' | ')
-            ingredient_dish['ingredient_name'] = ingredint_lst[0]
-            ingredient_dish['quantity'] = ingredint_lst[1]
-            ingredient_dish['measure'] = ingredint_lst[2]
-            dish_lst.append(ingredient_dish)
-        cook_book[dish[0]] = dish_lst
+        lst = f.read().split('\n\n')
+    for dish in lst:
+        dish_lst = dish.split('\n')
+        ingredients = []
+        for i in range(2, int(dish_lst[1]) + 2):
+            product = dish_lst[i].split(' | ')
+            mini_dict = {'ingredient_name': product[0], 'quantity': product[1], 'measure': product[2]}
+            ingredients.append(mini_dict)
+        cook_book[dish_lst[0]] = ingredients
     return cook_book
-
 
 # Task_2
 def get_shop_list_by_dishes(dishes: list, person_count: int) -> dict:
